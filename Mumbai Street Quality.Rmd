@@ -1,0 +1,33 @@
+---
+title: "Mumbai Street Quality"
+date: "29 November 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(leaflet)
+```
+
+
+```{r, echo=FALSE}
+# Read Data
+df <- read.csv("Street Data.csv")
+
+# Add Colors
+df$Color <- "black"
+df[df$Quality == 1,]$Color <- "red"
+df[df$Quality == 2,]$Color <- "orange"
+df[df$Quality == 3,]$Color <- "yellow"
+df[df$Quality == 4,]$Color <- "green"
+```
+
+```{r, plot, echo=FALSE, message=FALSE}
+df %>%
+      leaflet() %>%
+      addTiles() %>%
+      addCircleMarkers(color = df$Color) %>%
+      addLegend(labels = c("good", "ok", "bumpy", "bad", "terrible"),
+                colors = c("green", "yellow", "orange", "red", "black"),
+                position = "bottomright")
+```
